@@ -3,16 +3,24 @@
 
 
 # IMPORTS
-import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 from dataclasses import dataclass
+import time
+import pandas as pd
 
+##########################################################################################################################################################
+#####################################################    GLOBAL VARIABLES    #############################################################################
+df = pd.read_csv('../data/treated_data.csv', has_header=True, separator=';')
+# Preço por KM
+taxa_p= 4.87
+taxa_m= 11.92
+taxa_g= 27.44
 
-#GLOBAL VARIABLES
-df = pd.read_csv('../data/treated_data.csv')
+##########################################################################################################################################################
+##########################################################################################################################################################
 
-# CLASSES
+#                    CLASSES
 # Construtor
 @dataclass
 class Cliente():
@@ -20,9 +28,21 @@ class Cliente():
     Construir um objeto com os seguintes atributos
         {
         cliente:str,
-        de:str,
-        para:list:str,
-        itens:list:str
+        info_viagem:list[
+            {
+                de:str
+                itens:list
+                para:str
+                },
+            {
+                de:str
+                itens:list
+                para:str
+                },
+            ...
+            ...
+            ...
+        ],
         peso:float.round(4),
         modalidade:int,                                # 0 = pequeno | 1 = medio | 2 = pesado 
         custo:float.round(2)
@@ -89,21 +109,43 @@ class Cliente():
         self._custo=custo.round(2)
         
 # FUNCTIONS
-def check_trip(fr:str, to:str) -> int:
-    """_summary_
+def check_trip(fr:str, to:str) -> int:  
+    """Checa origem e destino
 
     Args:
         fr (str): _description_
         to (str): _description_
 
     Returns:
-        _type_: _description_
+        _type_: int Quilometragem rodada
     """
-    if fr != to:
-        return df[to][fr] # km
-    else:
+    while fr == to:
         print('Rota inválida. Tente novamente.')
         fr=input('Origem: ')
         to=input('Destino: ')
-        return check_trip(fr=fr,to=to)
-    
+    return df[to][fr] # quilometragem
+
+def check_name(name:str):
+    while True:
+        retorno= input(f'O nome da sua empresa é {name}, certo? (S/N)')
+        retorno=str(retorno.upper())
+        if retorno == 'S':
+            break
+        if retorno == 'N':
+            name= input('Qual o nome da sua empresa?    ')
+        else:
+            print('Não entendi sua resposta, vou refazer a pergunta, beleza?')
+            time.sleep(0.7)
+            
+            
+# 1. [Consultar trechos x modalidades]
+def consult_trip():
+    string=(f'\n Modalidades:\n        - Pequeno Porte:n\n            - Preço: {taxa_p}/km\n            - Peso Máximo: 1 Tonelada\n        - Médio Porte:\n            - Preço: {taxa_m}/km\n            - Peso Máximo: 4 Toneladas\n        - Grande Porte:\n            - Preço: {taxa_g}/km\n            - Peso Máximo: 11 Toneladas     \nORIGENS E DESTINOS:\n        {list(df.columns[1:])}')
+    return string
+# 2. [Cadastrar transporte]
+
+# 3. [Dados estatísticos]
+
+# 4. [Finalizar o programa]
+
+# TESTES:

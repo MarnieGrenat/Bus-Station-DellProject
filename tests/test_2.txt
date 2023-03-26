@@ -1,0 +1,5 @@
+LeMour 
++ [500 celulares, 100 geladeiras, 200 freezers, 98 cadeiras]
+de Maceió, Goiânia 
+- [90 geladeiras, 200 freezers e 20 celulares]
+de Goiânia, São Paulo.
